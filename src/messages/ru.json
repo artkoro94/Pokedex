@@ -17,7 +17,7 @@
     "loadError": "Не удалось загрузить покемона. Попробуйте ещё раз."
   },
   "Home": {
-    "title": "Исследуй мир Pokémon",
+    "title": "Исследуй мир Покемонов",
     "searchPlaceholder": "Поиск по имени покемона...",
     "searchButton": "Найти",
     "resultsTitle": "Коллекция Pokédex",
