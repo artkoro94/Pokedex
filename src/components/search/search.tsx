@@ -18,8 +18,8 @@ export const Search = ({
     ''
   );
   const [searchTerm, setSearchTerm] = useState(savedSearchTerm);
-  const [lastSubmittedSearchTerm, setLastSubmittedSearchTerm] =
-    useState(savedSearchTerm);
+  // A value in localStorage is only a draft until this component submits it.
+  const [lastSubmittedSearchTerm, setLastSubmittedSearchTerm] = useState('');
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>
