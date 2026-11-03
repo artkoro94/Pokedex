@@ -4,9 +4,15 @@ import { useLocalStorage } from '../../hooks/use-local-storage';
 
 interface SearchProps {
   onSearch: (searchTerm: string) => void;
+  placeholder?: string;
+  buttonLabel?: string;
 }
 
-export const Search = ({ onSearch }: SearchProps) => {
+export const Search = ({
+  onSearch,
+  placeholder = 'pikachu',
+  buttonLabel = 'Search',
+}: SearchProps) => {
   const [savedSearchTerm, setSavedSearchTerm] = useLocalStorage<string>(
     SEARCH_STORAGE_KEY,
     ''
@@ -37,18 +43,19 @@ export const Search = ({ onSearch }: SearchProps) => {
   };
 
   return (
-    <section className="search-section">
+    <section className="search-section" aria-label="Pokémon search">
       <form className="search-form" onSubmit={handleSubmit}>
         <input
           name="pokemon-search"
           value={searchTerm}
           onChange={handleChange}
-          placeholder="pikachu"
+          placeholder={placeholder}
           className="search-input"
+          aria-label={placeholder}
         />
 
         <button className="button" type="submit">
-          Search
+          {buttonLabel}
         </button>
       </form>
     </section>

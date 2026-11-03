@@ -14,5 +14,18 @@
     "loading": "Loading Pokémon...",
     "notFound": "Invalid Pokémon number.",
     "loadError": "Could not load this Pokémon. Please try again."
+  },
+  "Home": {
+    "eyebrow": "Your Pokémon journey starts here",
+    "title": "Explore the world of Pokémon",
+    "description": "Discover, search and collect your favorite Pokémon. Every adventure starts with one.",
+    "searchPlaceholder": "Search by Pokémon name...",
+    "searchButton": "Search",
+    "refreshButton": "Refresh",
+    "resultsTitle": "Pokédex collection",
+    "loading": "Loading Pokémon...",
+    "error": "Could not load Pokémon. Please try again.",
+    "empty": "No Pokémon found. Try another name.",
+    "count": "{count} Pokémon found"
   }
 }
