@@ -477,12 +477,15 @@ a:focus-visible {
 
 .pokemon-card__number {
   position: absolute;
-  top: 17px;
-  left: 18px;
+  top: 20px;
+  left: 20px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: rgba(128, 136, 158, 0.1);
   color: #a2a6b5;
   font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 .pokemon-card__info {

@@ -11,7 +11,7 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
     <Link className="pokemon-card" href={`/pokemon/${pokemon.id}`}>
       <article className="pokemon-card__content">
         <span className="pokemon-card__number">
-          #{String(pokemon.id).padStart(3, '0')}
+          {pokemon.id}
         </span>
 
         <div className="pokemon-card__image-wrapper">
