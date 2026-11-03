@@ -1,3 +1,5 @@
+import './globals.css';
+
 import type { ReactNode } from 'react';
 
 interface LayoutProps {
@@ -6,7 +8,7 @@ interface LayoutProps {
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html>
+    <html lang="en">
       <body>{children}</body>
     </html>
   );
