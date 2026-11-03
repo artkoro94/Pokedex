@@ -231,7 +231,6 @@ a:focus-visible {
   display: grid;
   width: 100%;
   min-height: 190px;
-  margin-top: 22px;
   margin-bottom: 12px;
   place-items: center;
   border-radius: 17px;
@@ -239,15 +238,15 @@ a:focus-visible {
 }
 
 .pokemon-card__image {
-  width: 145px;
-  height: 145px;
+  width: 160px;
+  height: 160px;
   max-width: 100%;
   object-fit: contain;
   transition: transform 180ms ease;
 }
 
 .pokemon-card:hover .pokemon-card__image {
-  transform: scale(1.02);
+  transform: scale(1.06);
 }
 
 .pokemon-card h3 {
@@ -428,12 +427,11 @@ a:focus-visible {
 
   .pokemon-card__image-wrapper {
     min-height: 145px;
-    margin-top: 18px;
   }
 
   .pokemon-card__image {
-    width: 115px;
-    height: 115px;
+    width: 125px;
+    height: 125px;
   }
 
   .pokemon-card p {
