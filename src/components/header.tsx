@@ -1,11 +1,10 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '../i18n/navigation';
 import { ThemeSwitcher } from './theme-switcher/theme-switcher';
 
 export const Header = () => {
-  const t = useTranslations('Header');
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -24,9 +23,6 @@ export const Header = () => {
 
       <nav className="header__nav" aria-label="Main navigation">
 
-        <Link className="header__link" href="/about">
-          {t('about')}
-        </Link>
 
         <button
           className="language-switcher"
