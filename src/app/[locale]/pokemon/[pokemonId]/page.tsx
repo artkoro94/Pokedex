@@ -16,7 +16,7 @@ const formatWeight = (weight?: number) =>
 export default function PokemonDetailsPage() {
   const { pokemonId } = useParams<{ pokemonId: string }>();
   const t = useTranslations('PokemonDetails');
-  const parsedPokemonId = /^\\d+$/.test(pokemonId) ? Number(pokemonId) : null;
+  const parsedPokemonId = /^\d+$/.test(pokemonId) ? Number(pokemonId) : null;
 
   const {
     data: pokemon,
