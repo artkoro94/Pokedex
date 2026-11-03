@@ -23,9 +23,6 @@ export const Header = () => {
       </Link>
 
       <nav className="header__nav" aria-label="Main navigation">
-        <Link className="header__link" href="/">
-          {t('home')}
-        </Link>
 
         <Link className="header__link" href="/about">
           {t('about')}
