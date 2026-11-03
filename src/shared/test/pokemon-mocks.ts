@@ -6,6 +6,8 @@ export const pikachuMock: PokemonCardData = {
   description: 'Types: electric. Height: 4. Weight: 60.',
   image: '/icons.svg',
   types: ['electric'],
+  height: 4,
+  weight: 60,
 };
 
 export const bulbasaurMock: PokemonCardData = {
@@ -15,6 +17,8 @@ export const bulbasaurMock: PokemonCardData = {
     'Types: grass, poison. Height: 7. Weight: 69.',
   image: '/icons.svg',
   types: ['grass', 'poison'],
+  height: 7,
+  weight: 69,
 };
 
 export const pokemonListMock: PokemonCardData[] = [
