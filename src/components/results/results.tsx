@@ -7,41 +7,47 @@ interface ResultsLabels {
   error: string;
   empty: string;
   count?: string;
+  previous: string;
+  next: string;
+  page: string;
 }
 
 interface ResultsProps {
   pokemons: PokemonCardData[];
   loading: boolean;
   error: Error | null;
-  labels?: ResultsLabels;
+  total: number;
+  page: number;
+  onPageChange: (page: number) => void;
+  showPagination: boolean;
+  labels: ResultsLabels;
 }
-
-const defaultLabels: ResultsLabels = {
-  title: 'Results',
-  loading: 'Loading...',
-  error: 'Could not load pokemons. Try another name.',
-  empty: 'No pokemons found.',
-};
 
 export const Results = ({
   pokemons,
   loading,
   error,
-  labels = defaultLabels,
+  total,
+  page,
+  onPageChange,
+  showPagination,
+  labels,
 }: ResultsProps) => {
-  const copy = { ...defaultLabels, ...labels };
+  const totalPages = Math.ceil(total / 10);
+  const canGoPrevious = page > 0;
+  const canGoNext = page + 1 < totalPages;
 
   return (
     <section className="results-section">
       <div className="results-heading">
-        <h2>{copy.title}</h2>
+        <h2>{labels.title}</h2>
         {!loading && !error && pokemons.length > 0 && (
-          <span className="results-count">{copy.count ?? pokemons.length}</span>
+          <span className="results-count">{labels.count}</span>
         )}
       </div>
 
       {loading && (
-        <div className="pokemon-skeleton-grid" aria-label={copy.loading}>
+        <div className="pokemon-skeleton-grid" aria-label={labels.loading}>
           {Array.from({ length: 10 }, (_, index) => (
             <div className="pokemon-skeleton" key={index}>
               <span className="pokemon-skeleton__image" />
@@ -52,14 +58,44 @@ export const Results = ({
         </div>
       )}
 
-      {error && <p className="error-message">{copy.error}</p>}
+      {error && <p className="error-message">{labels.error}</p>}
 
       {!loading && !error && pokemons.length === 0 && (
-        <p className="status-message">{copy.empty}</p>
+        <p className="status-message">{labels.empty}</p>
       )}
 
       {!loading && !error && pokemons.length > 0 && (
-        <PokemonList pokemons={pokemons} />
+        <>
+          <PokemonList pokemons={pokemons} />
+
+          {showPagination && totalPages > 1 && (
+            <nav className="pagination" aria-label="Pokémon pages">
+              <button
+                className="pagination__button"
+                type="button"
+                disabled={!canGoPrevious}
+                onClick={() => onPageChange(page - 1)}
+              >
+                <span aria-hidden="true">←</span>
+                {labels.previous}
+              </button>
+
+              <span className="pagination__status">
+                {labels.page}
+              </span>
+
+              <button
+                className="pagination__button"
+                type="button"
+                disabled={!canGoNext}
+                onClick={() => onPageChange(page + 1)}
+              >
+                {labels.next}
+                <span aria-hidden="true">→</span>
+              </button>
+            </nav>
+          )}
+        </>
       )}
     </section>
   );

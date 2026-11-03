@@ -1209,3 +1209,64 @@ a:focus-visible {
     font-size: 0.76rem;
   }
 }
+
+/* Catalog pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin: 34px 0 12px;
+}
+
+.pagination__button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 750;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.pagination__button:not(:disabled):hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.pagination__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.pagination__status {
+  color: var(--color-muted);
+  font-size: 0.88rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 10px;
+  }
+
+  .pagination__button {
+    min-height: 40px;
+    gap: 6px;
+    padding: 0 11px;
+    font-size: 0.8rem;
+  }
+
+  .pagination__status {
+    font-size: 0.8rem;
+  }
+}

@@ -24,6 +24,9 @@
     "loading": "Loading Pokémon...",
     "error": "Could not load Pokémon. Please try again.",
     "empty": "No Pokémon found. Try another name.",
-    "count": "{count} Pokémon found"
+    "count": "{count} Pokémon found",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {totalPages}"
   }
 }
