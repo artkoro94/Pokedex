@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '../i18n/navigation';
+import { ThemeSwitcher } from './theme-switcher/theme-switcher';
 
 export const Header = () => {
   const t = useTranslations('Header');
@@ -10,7 +11,7 @@ export const Header = () => {
         Pokédex
       </Link>
 
-      <nav className="header__nav">
+      <nav className="header__nav" aria-label="Main navigation">
         <Link className="header__link" href="/">
           {t('home')}
         </Link>
@@ -18,6 +19,8 @@ export const Header = () => {
         <Link className="header__link" href="/about">
           {t('about')}
         </Link>
+
+        <ThemeSwitcher />
       </nav>
     </header>
   );
