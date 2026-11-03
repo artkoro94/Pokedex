@@ -696,12 +696,15 @@ a:focus-visible {
 
 .pokemon-profile__number {
   position: absolute;
-  top: 20px;
-  left: 22px;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  font-weight: 850;
-  letter-spacing: 0.06em;
+  top: 28px;
+  left: 28px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: rgba(128, 136, 158, 0.1);
+  color: #a2a6b5;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .pokemon-profile__image {

@@ -69,7 +69,7 @@ export default function PokemonDetailsPage() {
       <article className="pokemon-profile">
         <div className="pokemon-profile__visual">
           <span className="pokemon-profile__number">
-            #{String(pokemon.id).padStart(3, '0')}
+            {pokemon.id}
           </span>
           <Image
             className="pokemon-profile__image"
