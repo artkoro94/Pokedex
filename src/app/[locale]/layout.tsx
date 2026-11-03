@@ -1,7 +1,13 @@
 import type { ReactNode } from 'react';
+import { notFound } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
+
+import enMessages from '../../messages/en.json';
+import ruMessages from '../../messages/ru.json';
+import { routing } from '../../i18n/routing';
+
 import { Header } from '../../components/header';
 import { Providers } from '../providers';
-import { NextIntlClientProvider } from 'next-intl';
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,20 +16,25 @@ interface LayoutProps {
   }>;
 }
 
-export default async function RootLayout({
+const messages = {
+  en: enMessages,
+  ru: ruMessages,
+};
+
+export default async function LocaleLayout({
   children,
   params,
 }: LayoutProps) {
   const { locale } = await params;
 
-  const messages = (
-    await import(`../../messages/${locale}.json`)
-  ).default;
+  if (!routing.locales.includes(locale as 'en' | 'ru')) {
+    notFound();
+  }
 
   return (
     <NextIntlClientProvider
       locale={locale}
-      messages={messages}
+      messages={messages[locale as keyof typeof messages]}
     >
       <Providers>
         <Header />
