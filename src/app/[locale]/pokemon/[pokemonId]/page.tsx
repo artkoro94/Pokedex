@@ -1,72 +1,115 @@
 'use client';
 
-import { useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { usePokemonDetailsQuery } from '../../../../hooks/use-pokemon-details-query';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+
+import { Link } from '../../../../i18n/navigation';
+import { usePokemonDetailsQuery } from '../../../../hooks/use-pokemon-details-query';
+
+const formatHeight = (height?: number) =>
+  height === undefined ? '—' : `${(height / 10).toFixed(1)} m`;
+
+const formatWeight = (weight?: number) =>
+  weight === undefined ? '—' : `${(weight / 10).toFixed(1)} kg`;
 
 export default function PokemonDetailsPage() {
-  const params = useParams();
-  const router = useRouter();
-
-  const parsedPokemonId = useMemo(() => {
-    const value = Number(params.pokemonId);
-
-    return Number.isInteger(value) ? value : null;
-  }, [params]);
+  const { pokemonId } = useParams<{ pokemonId: string }>();
+  const t = useTranslations('PokemonDetails');
+  const parsedPokemonId = /^\\d+$/.test(pokemonId) ? Number(pokemonId) : null;
 
   const {
     data: pokemon,
     isLoading,
     error,
-  } = usePokemonDetailsQuery(parsedPokemonId);
+  } = usePokemonDetailsQuery(
+    parsedPokemonId !== null && parsedPokemonId > 0
+      ? parsedPokemonId
+      : null
+  );
 
-  if (parsedPokemonId === null) {
+  if (parsedPokemonId === null || parsedPokemonId < 1) {
     return (
-      <aside className="details-panel">
-        <p className="error-message">Pokemon was not found.</p>
-      </aside>
+      <main className="pokemon-details-page">
+        <section className="details-panel details-panel--message">
+          <p className="error-message">{t('notFound')}</p>
+          <Link className="button" href="/">{t('back')}</Link>
+        </section>
+      </main>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <main className="pokemon-details-page">
+        <section className="details-panel details-panel--message">
+          <p className="status-message">{t('loading')}</p>
+        </section>
+      </main>
+    );
+  }
+
+  if (error || !pokemon) {
+    return (
+      <main className="pokemon-details-page">
+        <section className="details-panel details-panel--message">
+          <p className="error-message">{t('loadError')}</p>
+          <Link className="button" href="/">{t('back')}</Link>
+        </section>
+      </main>
     );
   }
 
   return (
-    <aside className="details-panel">
-      {isLoading && (
-        <p className="status-message">Loading details...</p>
-      )}
+    <main className="pokemon-details-page">
+      <Link className="details-back-link" href="/">
+        <span aria-hidden="true">←</span> {t('back')}
+      </Link>
 
-      {error && (
-        <p className="error-message">
-          Could not load pokemon details.
-        </p>
-      )}
+      <article className="pokemon-profile">
+        <div className="pokemon-profile__visual">
+          <span className="pokemon-profile__number">
+            #{String(pokemon.id).padStart(3, '0')}
+          </span>
+          <Image
+            className="pokemon-profile__image"
+            src={pokemon.image}
+            alt={pokemon.name}
+            width={420}
+            height={420}
+            priority
+          />
+        </div>
 
-      {!isLoading && !error && pokemon && (
-        <>
-          <div className="details-panel__content">
-            <Image
-              className="details-panel__image"
-              src={pokemon.image}
-              alt={pokemon.name}
-              width={300}
-              height={300}
-            />
+        <div className="pokemon-profile__content">
+          <p className="pokemon-profile__eyebrow">{t('eyebrow')}</p>
+          <h1 className="pokemon-profile__name">{pokemon.name}</h1>
 
-            <div>
-              <h2>{pokemon.name}</h2>
-              <p>{pokemon.description}</p>
-            </div>
+          <div className="pokemon-profile__types" aria-label={t('types')}>
+            {pokemon.types.map((type) => (
+              <span className="pokemon-type" data-type={type} key={type}>
+                {type}
+              </span>
+            ))}
           </div>
 
-          <button
-            className="details-panel__close"
-            type="button"
-            onClick={() => router.push('/')}
-          >
-            Close
-          </button>
-        </>
-      )}
-    </aside>
+          <p className="pokemon-profile__description">
+            {t('description', { name: pokemon.name })}
+          </p>
+
+          <h2 className="pokemon-profile__section-title">{t('measurements')}</h2>
+          <div className="pokemon-profile__stats">
+            <div className="pokemon-stat">
+              <span className="pokemon-stat__label">{t('height')}</span>
+              <strong>{formatHeight(pokemon.height)}</strong>
+            </div>
+            <div className="pokemon-stat">
+              <span className="pokemon-stat__label">{t('weight')}</span>
+              <strong>{formatWeight(pokemon.weight)}</strong>
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
   );
 }

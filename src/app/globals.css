@@ -636,3 +636,218 @@ a:focus-visible {
     font-size: 0.95rem;
   }
 }
+
+
+/* Pokémon detail page */
+.pokemon-details-page {
+  width: min(1040px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 38px 0 80px;
+}
+
+.details-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.details-back-link:hover {
+  color: var(--color-primary);
+}
+
+.details-back-link span {
+  font-size: 1.25rem;
+}
+
+.pokemon-profile {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) 1.05fr;
+  gap: clamp(28px, 5vw, 58px);
+  align-items: center;
+  padding: clamp(22px, 5vw, 52px);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 30px;
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow);
+}
+
+.pokemon-profile__visual {
+  position: relative;
+  display: grid;
+  min-height: 390px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(239, 83, 80, 0.12), transparent 58%),
+    var(--color-surface-muted);
+}
+
+.pokemon-profile__number {
+  position: absolute;
+  top: 20px;
+  left: 22px;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+}
+
+.pokemon-profile__image {
+  width: min(88%, 390px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 16px rgba(35, 38, 55, 0.12));
+  animation: pokemon-appear 420ms ease both;
+}
+
+.pokemon-profile__content {
+  min-width: 0;
+}
+
+.pokemon-profile__eyebrow {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pokemon-profile__name {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  letter-spacing: -0.065em;
+  line-height: 1.05;
+  text-transform: capitalize;
+  overflow-wrap: anywhere;
+}
+
+.pokemon-profile__types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.pokemon-profile__types .pokemon-type {
+  min-width: 76px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+}
+
+.pokemon-profile__description {
+  margin: 24px 0 30px;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.pokemon-profile__section-title {
+  margin: 0 0 13px;
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.pokemon-profile__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pokemon-stat {
+  display: flex;
+  min-height: 92px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  padding: 15px 17px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface-muted);
+}
+
+.pokemon-stat__label {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pokemon-stat strong {
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 850;
+}
+
+.details-panel--message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.details-panel--message .status-message,
+.details-panel--message .error-message {
+  width: 100%;
+  margin: 0;
+}
+
+@keyframes pokemon-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+:root[data-theme='dark'] .pokemon-profile__visual {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 104, 100, 0.13), transparent 58%),
+    var(--color-surface-muted);
+}
+
+@media (max-width: 760px) {
+  .pokemon-details-page {
+    width: min(100% - 32px, 560px);
+    padding-top: 26px;
+  }
+
+  .pokemon-profile {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    padding: 18px;
+    border-radius: 23px;
+  }
+
+  .pokemon-profile__visual {
+    min-height: 280px;
+  }
+
+  .pokemon-profile__image {
+    width: min(78%, 300px);
+  }
+
+  .pokemon-profile__content {
+    padding: 0 4px 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pokemon-profile__image {
+    animation: none;
+  }
+}
