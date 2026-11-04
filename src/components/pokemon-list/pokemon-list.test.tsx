@@ -6,7 +6,7 @@ import {
   bulbasaurMock,
   pikachuMock,
   pokemonListMock,
-} from '../../shared/test/pokemon-mocks'
+} from '../../shared/test/pokemon-mocks';
 
 describe('PokemonList', () => {
   it('renders pokemon cards from the list', () => {
@@ -16,18 +16,21 @@ describe('PokemonList', () => {
       screen.getByRole('heading', { name: pikachuMock.name })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(pikachuMock.description)).toBeInTheDocument();
+    expect(screen.getByText('electric')).toBeInTheDocument();
 
     expect(
       screen.getByRole('heading', { name: bulbasaurMock.name })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(bulbasaurMock.description)).toBeInTheDocument();
+    expect(screen.getByText('grass')).toBeInTheDocument();
+    expect(screen.getByText('poison')).toBeInTheDocument();
   });
 
   it('renders no pokemon cards when list is empty', () => {
     render(<PokemonList pokemons={[]} />);
 
-    expect(screen.queryByRole('heading', { name: pikachuMock.name })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: pikachuMock.name })
+    ).not.toBeInTheDocument();
   });
 });

@@ -80,7 +80,7 @@ describe('Search', () => {
     expect(localStorage.getItem(SEARCH_STORAGE_KEY)).toBe('squirtle');
   });
 
-  it('does not call onSearch again when submitted search term has not changed', async () => {
+  it('submits a saved search term once and skips an unchanged resubmission', async () => {
     const user = userEvent.setup();
     const onSearch = vi.fn();
 
@@ -94,7 +94,12 @@ describe('Search', () => {
 
     await user.click(searchButton);
 
-    expect(onSearch).not.toHaveBeenCalled();
+    expect(onSearch).toHaveBeenCalledTimes(1);
+    expect(onSearch).toHaveBeenCalledWith('pikachu');
+
+    await user.click(searchButton);
+
+    expect(onSearch).toHaveBeenCalledTimes(1);
   });
 
   it('submits search when user presses Enter', async () => {

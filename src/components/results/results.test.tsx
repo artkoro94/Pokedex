@@ -1,5 +1,5 @@
 import { screen, render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { Results } from './results';
 import {
@@ -8,76 +8,109 @@ import {
   pokemonListMock,
 } from '../../shared/test/pokemon-mocks';
 
+const labels = {
+  title: 'Results',
+  loading: 'Loading...',
+  error: 'Could not load pokemons. Try another name.',
+  empty: 'No pokemons found.',
+  count: '2 Pokémon',
+  previous: 'Previous',
+  next: 'Next',
+  page: 'Page 1 of 2',
+};
+
+const defaultProps = {
+  pokemons: [],
+  loading: false,
+  error: null,
+  total: 20,
+  page: 0,
+  onPageChange: vi.fn(),
+  showPagination: false,
+  labels,
+};
+
 describe('Results', () => {
   it('renders section title', () => {
-    render(<Results pokemons={[]} loading={false} error={null} />);
+    render(<Results {...defaultProps} />);
 
     expect(
       screen.getByRole('heading', { name: 'Results' })
     ).toBeInTheDocument();
   });
 
-  it('renders loading message while data is loading', () => {
-    render(<Results pokemons={[]} loading={true} error={null} />);
+  it('renders loading indicator while data is loading', () => {
+    render(<Results {...defaultProps} loading />);
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading...')).toBeInTheDocument();
   });
 
   it('renders error message when error exists', () => {
-    const errorMessage = new Error('Failed to load pokemons');
+    render(
+      <Results
+        {...defaultProps}
+        error={new Error('Failed to load pokemons')}
+      />
+    );
 
-    render(<Results pokemons={[]} loading={false} error={errorMessage} />);
-
-    expect(screen.getByText('Could not load pokemons. Try another name.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Could not load pokemons. Try another name.')
+    ).toBeInTheDocument();
   });
 
   it('renders empty message when there are no pokemons', () => {
-    render(<Results pokemons={[]} loading={false} error={null} />);
+    render(<Results {...defaultProps} />);
 
     expect(screen.getByText('No pokemons found.')).toBeInTheDocument();
   });
 
   it('renders pokemon list when data exists', () => {
-    render(<Results pokemons={pokemonListMock} loading={false} error={null} />);
+    render(
+      <Results
+        {...defaultProps}
+        pokemons={pokemonListMock}
+      />
+    );
 
     expect(
       screen.getByRole('heading', { name: pikachuMock.name })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(pikachuMock.description)).toBeInTheDocument();
-
     expect(
       screen.getByRole('heading', { name: bulbasaurMock.name })
     ).toBeInTheDocument();
-
-    expect(screen.getByText(bulbasaurMock.description)).toBeInTheDocument();
   });
 
   it('does not render pokemon list while loading', () => {
-    render(<Results pokemons={pokemonListMock} loading={true} error={null} />);
+    render(
+      <Results
+        {...defaultProps}
+        pokemons={pokemonListMock}
+        loading
+      />
+    );
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading...')).toBeInTheDocument();
 
     expect(
       screen.queryByRole('heading', { name: pikachuMock.name })
     ).not.toBeInTheDocument();
   });
 
-it('does not render empty message when error exists', () => {
-  render(
-    <Results
-      pokemons={[]}
-      loading={false}
-      error={new Error('Server error')}
-    />
-  );
+  it('does not render empty message when error exists', () => {
+    render(
+      <Results
+        {...defaultProps}
+        error={new Error('Server error')}
+      />
+    );
 
-  expect(
-    screen.getByText('Could not load pokemons. Try another name.')
-  ).toBeInTheDocument();
+    expect(
+      screen.getByText('Could not load pokemons. Try another name.')
+    ).toBeInTheDocument();
 
-  expect(
-    screen.queryByText('No pokemons found.')
-  ).not.toBeInTheDocument();
-});
+    expect(
+      screen.queryByText('No pokemons found.')
+    ).not.toBeInTheDocument();
   });
+});

@@ -6,24 +6,22 @@ import { PokemonCard } from './pokemon-card';
 const pokemonMock = {
   id: 25,
   name: 'pikachu',
-  description: 'Electric pokemon',
+  description: 'Types: electric. Height: 4. Weight: 60.',
   image: '/pikachu.png',
   types: ['electric'],
+  height: 4,
+  weight: 60,
 };
 
 describe('PokemonCard', () => {
-  it('renders pokemon name, description and image', () => {
-    renderCard();
+  it('renders pokemon name, type and image', () => {
+    render(<PokemonCard pokemon={pokemonMock} />);
 
     expect(
-      screen.getByRole('heading', {
-        name: /pikachu/i,
-      })
+      screen.getByRole('heading', { name: 'pikachu' })
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByText(/electric pokemon/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText('electric')).toBeInTheDocument();
 
     expect(screen.getByRole('img')).toHaveAttribute(
       'alt',
@@ -31,31 +29,12 @@ describe('PokemonCard', () => {
     );
   });
 
-  it('adds default page query param when page does not exist', () => {
-    renderCard();
+  it('links to the pokemon details page', () => {
+    render(<PokemonCard pokemon={pokemonMock} />);
 
-  const link = screen.getByRole('link');
-
-  expect(link).toHaveAttribute(
-    'href',
-    '/pokemon/25'
-  );
-  });
-
-  it('keeps existing page query param', () => {
-    renderCard();
-
-  const link = screen.getByRole('link');
-
-  expect(link).toHaveAttribute(
-    'href',
-    '/pokemon/25'
-  );
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/pokemon/25'
+    );
   });
 });
-
-const renderCard = () => {
-  render(
-      <PokemonCard pokemon={pokemonMock} />
-  );
-};
