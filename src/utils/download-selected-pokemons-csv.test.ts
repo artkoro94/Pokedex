@@ -32,6 +32,8 @@ describe('downloadSelectedPokemonsCsv', () => {
         description: 'Electric pokemon',
         image: 'pikachu.png',
         types: ['electric'],
+        height: 4,
+        weight: 60,
       },
     ]);
 

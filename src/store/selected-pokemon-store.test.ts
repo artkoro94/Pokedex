@@ -7,6 +7,8 @@ const mockPokemon = {
   description: 'Electric pokemon',
   image: 'pikachu.png',
   types: ['electric'],
+  height: 4,
+  weight: 60,
 };
 
 describe('selected pokemon store', () => {
