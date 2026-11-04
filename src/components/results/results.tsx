@@ -1,4 +1,4 @@
-import type { PokemonCardData } from '../../shared/api/pokemon-api';
+import { PAGE_LIMIT, type PokemonCardData } from '../../shared/api/pokemon-api';
 import { PokemonList } from '../pokemon-list/pokemon-list';
 
 interface ResultsLabels {
@@ -33,7 +33,7 @@ export const Results = ({
   showPagination,
   labels,
 }: ResultsProps) => {
-  const totalPages = Math.ceil(total / 10);
+  const totalPages = Math.ceil(total / PAGE_LIMIT);
   const canGoPrevious = page > 0;
   const canGoNext = page + 1 < totalPages;
 
