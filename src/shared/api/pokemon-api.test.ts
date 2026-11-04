@@ -129,6 +129,8 @@ describe('pokemon-api', () => {
         description: 'Types: electric. Height: 4. Weight: 60.',
         image: '/icons.svg',
         types: ['electric'],
+        height: 4,
+        weight: 60,
       },
       {
         id: 1,
