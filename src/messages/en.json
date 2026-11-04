@@ -1,6 +1,32 @@
 {
   "Header": {
     "home": "Home",
-    "about": "About"
+    "about": "About",
+    "language": "Language"
+  },
+  "PokemonDetails": {
+    "eyebrow": "Pokémon profile",
+    "description": "Meet {name}, discover its type and physical measurements.",
+    "types": "Pokémon types",
+    "measurements": "Measurements",
+    "height": "Height",
+    "weight": "Weight",
+    "back": "Back to Pokédex",
+    "loading": "Loading Pokémon...",
+    "notFound": "Invalid Pokémon number.",
+    "loadError": "Could not load this Pokémon. Please try again."
+  },
+  "Home": {
+    "title": "Explore the world of Pokémon",
+    "searchPlaceholder": "Search by Pokémon name...",
+    "searchButton": "Search",
+    "resultsTitle": "Pokédex collection",
+    "loading": "Loading Pokémon...",
+    "error": "Could not load Pokémon. Please try again.",
+    "empty": "No Pokémon found. Try another name.",
+    "count": "{count} Pokémon found",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {totalPages}"
   }
 }

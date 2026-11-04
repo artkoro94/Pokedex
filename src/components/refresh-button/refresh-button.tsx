@@ -1,6 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-export const RefreshButton = () => {
+interface RefreshButtonProps {
+  label?: string;
+}
+
+export const RefreshButton = ({ label = 'Refresh' }: RefreshButtonProps) => {
   const queryClient = useQueryClient();
 
   const handleRefresh = async () => {
@@ -15,11 +19,12 @@ export const RefreshButton = () => {
 
   return (
     <button
-      className="button"
+      className="button button--secondary"
       type="button"
       onClick={handleRefresh}
     >
-      Refresh
+      <span aria-hidden="true">↻</span>
+      {label}
     </button>
   );
 };

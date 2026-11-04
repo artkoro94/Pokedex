@@ -9,9 +9,17 @@ export interface PokemonCardData {
   description: string;
   image: string;
   types: string[];
+  height: number;
+  weight: number;
+}
+
+export interface PokemonPageData {
+  pokemons: PokemonCardData[];
+  total: number;
 }
 
 interface PokemonListResponse {
+  count: number;
   results: PokemonListItem[];
 }
 
@@ -20,15 +28,14 @@ interface PokemonDetailsResponse {
   name: string;
   height: number;
   weight: number;
-sprites?: {
-  front_default: string | null;
-  other?: {
-    ['official-artwork']?: {
-      front_default: string | null;
+  sprites?: {
+    front_default: string | null;
+    other?: {
+      ['official-artwork']?: {
+        front_default: string | null;
+      };
     };
   };
-};
-
   types: {
     type: {
       name: string;
@@ -37,7 +44,7 @@ sprites?: {
 }
 
 const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
-const PAGE_LIMIT = 10;
+export const PAGE_LIMIT = 10;
 const FALLBACK_IMAGE = '/icons.svg';
 
 const getPokemonDescription = (pokemon: PokemonDetailsResponse): string => {
@@ -56,15 +63,15 @@ const getPokemonImage = (pokemon: PokemonDetailsResponse): string => {
 
 const mapPokemonDetails = (
   pokemon: PokemonDetailsResponse
-): PokemonCardData => {
-  return {
-    id: pokemon.id,
-    name: pokemon.name,
-    description: getPokemonDescription(pokemon),
-    image: getPokemonImage(pokemon),
-    types: pokemon.types.map((item) => item.type.name),
-  };
-};
+): PokemonCardData => ({
+  id: pokemon.id,
+  name: pokemon.name,
+  description: getPokemonDescription(pokemon),
+  image: getPokemonImage(pokemon),
+  types: pokemon.types.map((item) => item.type.name),
+  height: pokemon.height,
+  weight: pokemon.weight,
+});
 
 const fetchPokemonDetails = async (
   url: string
@@ -82,14 +89,12 @@ const fetchPokemonDetails = async (
 
 export const fetchPokemonById = async (
   pokemonId: number
-): Promise<PokemonCardData> => {
-  return fetchPokemonDetails(`${BASE_URL}/${pokemonId}`);
-};
+): Promise<PokemonCardData> => fetchPokemonDetails(`${BASE_URL}/${pokemonId}`);
 
-export const fetchPokemons = async (
+export const fetchPokemonPage = async (
   searchTerm: string,
   offset: number
-): Promise<PokemonCardData[]> => {
+): Promise<PokemonPageData> => {
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
   if (normalizedSearchTerm) {
@@ -101,7 +106,10 @@ export const fetchPokemons = async (
 
     const data = (await response.json()) as PokemonDetailsResponse;
 
-    return [mapPokemonDetails(data)];
+    return {
+      pokemons: [mapPokemonDetails(data)],
+      total: 1,
+    };
   }
 
   const response = await fetch(
@@ -113,8 +121,21 @@ export const fetchPokemons = async (
   }
 
   const data = (await response.json()) as PokemonListResponse;
-
-  return Promise.all(
+  const pokemons = await Promise.all(
     data.results.map((pokemon) => fetchPokemonDetails(pokemon.url))
   );
+
+  return {
+    pokemons,
+    total: data.count,
+  };
+};
+
+// Kept for existing tests and callers that only need the list.
+export const fetchPokemons = async (
+  searchTerm: string,
+  offset: number
+): Promise<PokemonCardData[]> => {
+  const page = await fetchPokemonPage(searchTerm, offset);
+  return page.pokemons;
 };

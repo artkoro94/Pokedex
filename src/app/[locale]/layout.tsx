@@ -7,6 +7,7 @@ import ruMessages from '../../messages/ru.json';
 import { routing } from '../../i18n/routing';
 
 import { Header } from '../../components/header';
+import { Footer } from '../../components/footer';
 import { Providers } from '../providers';
 
 interface LayoutProps {
@@ -37,8 +38,11 @@ export default async function LocaleLayout({
       messages={messages[locale as keyof typeof messages]}
     >
       <Providers>
-        <Header />
-        {children}
+        <div className="site-shell">
+          <Header />
+          <div className="site-shell__content">{children}</div>
+          <Footer />
+        </div>
       </Providers>
     </NextIntlClientProvider>
   );

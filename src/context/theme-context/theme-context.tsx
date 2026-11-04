@@ -19,26 +19,30 @@ const THEME_STORAGE_KEY = 'pokemon-theme';
 export const ThemeProvider = ({
   children,
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === 'undefined') {
-      return 'light';
-    }
-
-    const savedTheme = window.localStorage.getItem(
-      THEME_STORAGE_KEY
-    );
-
-    return savedTheme === 'dark' ? 'dark' : 'light';
-  });
+  const [theme, setTheme] = useState<Theme>('light');
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
 
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      setTheme(savedTheme);
+    }
+
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    document.documentElement.setAttribute('data-theme', theme);
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [theme]);
+  }, [isHydrated, theme]);
 
   const toggleTheme = () => {
-    setTheme((currentTheme: Theme) =>
+    setTheme((currentTheme) =>
       currentTheme === 'light' ? 'dark' : 'light'
     );
   };
