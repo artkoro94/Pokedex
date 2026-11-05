@@ -170,4 +170,56 @@ describe('pokemon-api', () => {
       'Failed to fetch pokemon details'
     );
   });
+
+  it('passes the abort signal to search and details requests', async () => {
+    const controller = new AbortController();
+    fetchMock.mockResolvedValueOnce(createResponse(true, pikachuDetails));
+
+    await fetchPokemons('pikachu', 0, controller.signal);
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://pokeapi.co/api/v2/pokemon/pikachu',
+      { signal: controller.signal }
+    );
+  });
+
+  it('passes the same abort signal to the list and parallel details requests', async () => {
+    const controller = new AbortController();
+    fetchMock
+      .mockResolvedValueOnce(
+        createResponse(true, {
+          results: [
+            {
+              name: 'pikachu',
+              url: 'https://pokeapi.co/api/v2/pokemon/25/',
+            },
+            {
+              name: 'bulbasaur',
+              url: 'https://pokeapi.co/api/v2/pokemon/1/',
+            },
+          ],
+        })
+      )
+      .mockResolvedValueOnce(createResponse(true, pikachuDetails))
+      .mockResolvedValueOnce(createResponse(true, bulbasaurDetails));
+
+    await fetchPokemons('', 0, controller.signal);
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      'https://pokeapi.co/api/v2/pokemon?limit=10&offset=0',
+      { signal: controller.signal }
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      'https://pokeapi.co/api/v2/pokemon/25/',
+      { signal: controller.signal }
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      'https://pokeapi.co/api/v2/pokemon/1/',
+      { signal: controller.signal }
+    );
+  });
+
 });

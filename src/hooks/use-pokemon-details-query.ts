@@ -10,7 +10,7 @@ export const usePokemonDetailsQuery = (
 ) => {
   return useQuery<PokemonCardData>({
     queryKey: ['pokemon-details', pokemonId],
-    queryFn: () => fetchPokemonById(pokemonId as number),
+    queryFn: ({ signal }) => fetchPokemonById(pokemonId as number, signal),
     enabled: pokemonId !== null,
   });
 };

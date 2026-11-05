@@ -8,6 +8,6 @@ export const usePokemonsQuery = (
 ) => {
   return useQuery({
     queryKey: ['pokemons', searchTerm, offset],
-    queryFn: () => fetchPokemonPage(searchTerm, offset),
+    queryFn: ({ signal }) => fetchPokemonPage(searchTerm, offset, signal),
   });
 };
