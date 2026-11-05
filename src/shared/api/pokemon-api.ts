@@ -47,6 +47,9 @@ const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
 export const PAGE_LIMIT = 10;
 const FALLBACK_IMAGE = '/icons.svg';
 
+const fetchWithSignal = (url: string, signal?: AbortSignal): Promise<Response> =>
+  signal ? fetch(url, { signal }) : fetch(url);
+
 const getPokemonDescription = (pokemon: PokemonDetailsResponse): string => {
   const types = pokemon.types.map((item) => item.type.name).join(', ');
 
@@ -74,9 +77,10 @@ const mapPokemonDetails = (
 });
 
 const fetchPokemonDetails = async (
-  url: string
+  url: string,
+  signal?: AbortSignal
 ): Promise<PokemonCardData> => {
-  const response = await fetch(url);
+  const response = await fetchWithSignal(url, signal);
 
   if (!response.ok) {
     throw new Error('Failed to fetch pokemon details');
@@ -88,17 +92,23 @@ const fetchPokemonDetails = async (
 };
 
 export const fetchPokemonById = async (
-  pokemonId: number
-): Promise<PokemonCardData> => fetchPokemonDetails(`${BASE_URL}/${pokemonId}`);
+  pokemonId: number,
+  signal?: AbortSignal
+): Promise<PokemonCardData> =>
+  fetchPokemonDetails(`${BASE_URL}/${pokemonId}`, signal);
 
 export const fetchPokemonPage = async (
   searchTerm: string,
-  offset: number
+  offset: number,
+  signal?: AbortSignal
 ): Promise<PokemonPageData> => {
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
   if (normalizedSearchTerm) {
-    const response = await fetch(`${BASE_URL}/${normalizedSearchTerm}`);
+    const response = await fetchWithSignal(
+      `${BASE_URL}/${normalizedSearchTerm}`,
+      signal
+    );
 
     if (!response.ok) {
       throw new Error('Pokemon not found');
@@ -112,8 +122,9 @@ export const fetchPokemonPage = async (
     };
   }
 
-  const response = await fetch(
-    `${BASE_URL}?limit=${PAGE_LIMIT}&offset=${offset}`
+  const response = await fetchWithSignal(
+    `${BASE_URL}?limit=${PAGE_LIMIT}&offset=${offset}`,
+    signal
   );
 
   if (!response.ok) {
@@ -122,7 +133,7 @@ export const fetchPokemonPage = async (
 
   const data = (await response.json()) as PokemonListResponse;
   const pokemons = await Promise.all(
-    data.results.map((pokemon) => fetchPokemonDetails(pokemon.url))
+    data.results.map((pokemon) => fetchPokemonDetails(pokemon.url, signal))
   );
 
   return {
@@ -134,8 +145,9 @@ export const fetchPokemonPage = async (
 // Kept for existing tests and callers that only need the list.
 export const fetchPokemons = async (
   searchTerm: string,
-  offset: number
+  offset: number,
+  signal?: AbortSignal
 ): Promise<PokemonCardData[]> => {
-  const page = await fetchPokemonPage(searchTerm, offset);
+  const page = await fetchPokemonPage(searchTerm, offset, signal);
   return page.pokemons;
 };
