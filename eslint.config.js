@@ -1,3 +1,4 @@
+
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -7,7 +8,7 @@ import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-  globalIgnores(['dist', 'coverage']),
+  globalIgnores(['dist', '.next', 'coverage']),
 
   js.configs.recommended,
 
@@ -34,6 +35,14 @@ export default defineConfig([
         'warn',
         { allowConstantExport: true },
       ],
+    },
+  },
+
+  // Next.js App Router allows exporting metadata from page/layout files
+  {
+    files: ['src/app/**/layout.tsx', 'src/app/**/page.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 ]);
