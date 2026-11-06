@@ -6,7 +6,6 @@
   },
   "PokemonDetails": {
     "eyebrow": "Pokémon profile",
-    "description": "Meet {name}, discover its type and physical measurements.",
     "types": "Pokémon types",
     "measurements": "Measurements",
     "height": "Height",

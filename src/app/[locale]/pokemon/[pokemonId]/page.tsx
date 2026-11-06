@@ -93,10 +93,6 @@ export default function PokemonDetailsPage() {
             ))}
           </div>
 
-          <p className="pokemon-profile__description">
-            {t('description', { name: pokemon.name })}
-          </p>
-
           <h2 className="pokemon-profile__section-title">{t('measurements')}</h2>
           <div className="pokemon-profile__stats">
             <div className="pokemon-stat">

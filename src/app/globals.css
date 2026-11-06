@@ -743,20 +743,13 @@ a:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 .pokemon-profile__types .pokemon-type {
   min-width: 76px;
   padding: 8px 14px;
   font-size: 0.78rem;
-}
-
-.pokemon-profile__description {
-  margin: 24px 0 30px;
-  color: var(--color-muted);
-  font-size: 1rem;
-  line-height: 1.8;
 }
 
 .pokemon-profile__section-title {
